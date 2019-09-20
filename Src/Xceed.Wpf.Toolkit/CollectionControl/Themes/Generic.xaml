@@ -108,7 +108,7 @@
                         Grid.Row="1"
                         Grid.Column="1"
                         Padding="5,0"
-                        Content="Add"
+                        Content="Neu"
                         Command="New"
                         CommandParameter="{Binding SelectedItem, ElementName=PART_NewItemTypesComboBox}" >
                 </Button>

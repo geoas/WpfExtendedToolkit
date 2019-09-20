@@ -145,7 +145,14 @@ namespace Xceed.Wpf.Toolkit
       collectionControlDialog.ItemsSourceType = this.ItemsSourceType;
       collectionControlDialog.IsReadOnly = this.IsReadOnly;
       collectionControlDialog.EditorDefinitions = this.EditorDefinitions;
+      collectionControlDialog.Title = GetTitle();
       collectionControlDialog.ShowDialog();
+    }
+
+    private string GetTitle()
+    {
+      var dc = (PropertyItem)DataContext;
+      return dc == null ? "Collection Control" : dc.DisplayName;
     }
 
     #endregion

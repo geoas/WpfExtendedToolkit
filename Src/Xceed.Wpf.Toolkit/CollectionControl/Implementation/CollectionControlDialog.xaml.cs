@@ -48,68 +48,68 @@ namespace Xceed.Wpf.Toolkit
 
     #region Properties
 
-    public static readonly DependencyProperty ItemsSourceProperty = DependencyProperty.Register( "ItemsSource", typeof( IEnumerable ), typeof( CollectionControlDialog ), new UIPropertyMetadata( null ) );
+    public static readonly DependencyProperty ItemsSourceProperty = DependencyProperty.Register("ItemsSource", typeof(IEnumerable), typeof(CollectionControlDialog), new UIPropertyMetadata(null));
     public IEnumerable ItemsSource
     {
       get
       {
-        return ( IEnumerable )GetValue( ItemsSourceProperty );
+        return (IEnumerable)GetValue(ItemsSourceProperty);
       }
       set
       {
-        SetValue( ItemsSourceProperty, value );
+        SetValue(ItemsSourceProperty, value);
       }
     }
 
-    public static readonly DependencyProperty ItemsSourceTypeProperty = DependencyProperty.Register( "ItemsSourceType", typeof( Type ), typeof( CollectionControlDialog ), new UIPropertyMetadata( null ) );
+    public static readonly DependencyProperty ItemsSourceTypeProperty = DependencyProperty.Register("ItemsSourceType", typeof(Type), typeof(CollectionControlDialog), new UIPropertyMetadata(null));
     public Type ItemsSourceType
     {
       get
       {
-        return ( Type )GetValue( ItemsSourceTypeProperty );
+        return (Type)GetValue(ItemsSourceTypeProperty);
       }
       set
       {
-        SetValue( ItemsSourceTypeProperty, value );
+        SetValue(ItemsSourceTypeProperty, value);
       }
     }
 
-    public static readonly DependencyProperty NewItemTypesProperty = DependencyProperty.Register( "NewItemTypes", typeof( IList ), typeof( CollectionControlDialog ), new UIPropertyMetadata( null ) );
+    public static readonly DependencyProperty NewItemTypesProperty = DependencyProperty.Register("NewItemTypes", typeof(IList), typeof(CollectionControlDialog), new UIPropertyMetadata(null));
     public IList<Type> NewItemTypes
     {
       get
       {
-        return ( IList<Type> )GetValue( NewItemTypesProperty );
+        return (IList<Type>)GetValue(NewItemTypesProperty);
       }
       set
       {
-        SetValue( NewItemTypesProperty, value );
+        SetValue(NewItemTypesProperty, value);
       }
     }
 
-    public static readonly DependencyProperty IsReadOnlyProperty = DependencyProperty.Register( "IsReadOnly", typeof( bool ), typeof( CollectionControlDialog ), new UIPropertyMetadata( false ) );
+    public static readonly DependencyProperty IsReadOnlyProperty = DependencyProperty.Register("IsReadOnly", typeof(bool), typeof(CollectionControlDialog), new UIPropertyMetadata(false));
     public bool IsReadOnly
     {
       get
       {
-        return ( bool )GetValue( IsReadOnlyProperty );
+        return (bool)GetValue(IsReadOnlyProperty);
       }
       set
       {
-        SetValue( IsReadOnlyProperty, value );
+        SetValue(IsReadOnlyProperty, value);
       }
     }
 
-    public static readonly DependencyProperty EditorDefinitionsProperty = DependencyProperty.Register( "EditorDefinitions", typeof( EditorDefinitionCollection ), typeof( CollectionControlDialog ), new UIPropertyMetadata( null ) );
+    public static readonly DependencyProperty EditorDefinitionsProperty = DependencyProperty.Register("EditorDefinitions", typeof(EditorDefinitionCollection), typeof(CollectionControlDialog), new UIPropertyMetadata(null));
     public EditorDefinitionCollection EditorDefinitions
     {
       get
       {
-        return ( EditorDefinitionCollection )GetValue( EditorDefinitionsProperty );
+        return (EditorDefinitionCollection)GetValue(EditorDefinitionsProperty);
       }
       set
       {
-        SetValue( EditorDefinitionsProperty, value );
+        SetValue(EditorDefinitionsProperty, value);
       }
     }
 
@@ -130,14 +130,14 @@ namespace Xceed.Wpf.Toolkit
       InitializeComponent();
     }
 
-    public CollectionControlDialog( Type itemsourceType )
+    public CollectionControlDialog(Type itemsourceType)
       : this()
     {
       ItemsSourceType = itemsourceType;
     }
 
-    public CollectionControlDialog( Type itemsourceType, IList<Type> newItemTypes )
-      : this( itemsourceType )
+    public CollectionControlDialog(Type itemsourceType, IList<Type> newItemTypes)
+      : this(itemsourceType)
     {
       NewItemTypes = newItemTypes;
     }
@@ -146,16 +146,16 @@ namespace Xceed.Wpf.Toolkit
 
     #region Overrides
 
-    protected override void OnSourceInitialized( EventArgs e )
+    protected override void OnSourceInitialized(EventArgs e)
     {
-      base.OnSourceInitialized( e );
+      base.OnSourceInitialized(e);
 
       //Backup data if case "Cancel" is clicked.
-      if( this.ItemsSource != null )
+      if (this.ItemsSource != null)
       {
-        foreach( var item in this.ItemsSource )
+        foreach (var item in this.ItemsSource)
         {
-          originalData.Add( this.Clone( item ) );
+          originalData.Add(this.Clone(item));
         }
       }
     }
@@ -164,13 +164,13 @@ namespace Xceed.Wpf.Toolkit
 
     #region Event Handlers
 
-    private void OkButton_Click( object sender, RoutedEventArgs e )
+    private void OkButton_Click(object sender, RoutedEventArgs e)
     {
-      if( this.ItemsSource is IDictionary )
+      if (this.ItemsSource is IDictionary)
       {
-        if( !this.AreDictionaryKeysValid() )
+        if (!this.AreDictionaryKeysValid())
         {
-          MessageBox.Show( "All dictionary items should have distinct non-null Key values.", "Warning" );
+          MessageBox.Show("All dictionary items should have distinct non-null Key values.", "Warning");
           return;
         }
       }
@@ -180,9 +180,9 @@ namespace Xceed.Wpf.Toolkit
       this.Close();
     }
 
-    private void CancelButton_Click( object sender, RoutedEventArgs e )
+    private void CancelButton_Click(object sender, RoutedEventArgs e)
     {
-      _collectionControl.PersistChanges( originalData );
+      _collectionControl.PersistChanges(originalData);
       this.DialogResult = false;
       this.Close();
     }
@@ -192,30 +192,30 @@ namespace Xceed.Wpf.Toolkit
     #region Private Methods
 
     [SecuritySafeCritical]
-    private object Clone( object source )
+    private object Clone(object source)
     {
-      if( source == null )
+      if (source == null)
         return null;
 
       object result = null;
       var sourceType = source.GetType();
 
-      if( source is Array )
+      if (source is Array)
       {
-        using( var stream = new MemoryStream() )
+        using (var stream = new MemoryStream())
         {
           var formatter = new BinaryFormatter();
-          formatter.Serialize( stream, source );
-          stream.Seek( 0, SeekOrigin.Begin );
-          result = ( Array )formatter.Deserialize( stream );
+          formatter.Serialize(stream, source);
+          stream.Seek(0, SeekOrigin.Begin);
+          result = (Array)formatter.Deserialize(stream);
         }
       }
       // For IDictionary, we need to create EditableKeyValuePair to edit the Key-Value.
-      else if( ( this.ItemsSource is IDictionary )
+      else if ((this.ItemsSource is IDictionary)
         && sourceType.IsGenericType
-        && typeof( KeyValuePair<,> ).IsAssignableFrom( sourceType.GetGenericTypeDefinition() ) )
+        && typeof(KeyValuePair<,>).IsAssignableFrom(sourceType.GetGenericTypeDefinition()))
       {
-        result = this.GenerateEditableKeyValuePair( source );
+        result = this.GenerateEditableKeyValuePair(source);
       }
       else if (sourceType == typeof(string))
       { result = source; }
@@ -224,69 +224,70 @@ namespace Xceed.Wpf.Toolkit
         // Initialized a new object with default values
         try
         {
-          result = FormatterServices.GetUninitializedObject( sourceType );
+          result = FormatterServices.GetUninitializedObject(sourceType);
         }
-        catch( Exception )
+        catch (Exception)
         {
         }
 
-        var constructor = sourceType.GetConstructor( Type.EmptyTypes );
-        if( constructor != null )
+        var constructor = sourceType.GetConstructor(Type.EmptyTypes);
+        if (constructor != null)
         {
-          constructor.Invoke( result, null );
+          constructor.Invoke(result, null);
         }
         else
         {
           result = source;
         }
       }
-      Debug.Assert( result != null );
-      if( result != null && !( result is string ) )
+      Debug.Assert(result != null);
+      if (result != null && !(result is string))
       {
         var properties = sourceType.GetProperties();
 
-        foreach( var propertyInfo in properties )
+        foreach (var propertyInfo in properties)
         {
+          if (!propertyInfo.CanWrite) continue;
           var parameters = propertyInfo.GetIndexParameters();
-          var index = parameters.GetLength( 0 ) == 0 ? null : new object[] { parameters.GetLength( 0 ) - 1 };
-          var propertyInfoValue = propertyInfo.GetValue( source, index );
+          var index = parameters.GetLength(0) == 0 ? null : new object[] { parameters.GetLength(0) - 1 };
+          var propertyInfoValue = propertyInfo.GetValue(source, index);
 
-          if( propertyInfo.CanWrite )
+          if (propertyInfo.CanWrite)
           {
             // Look for nested object
-            if( propertyInfo.PropertyType.IsClass
-              && ( propertyInfo.PropertyType != typeof( Transform ) )
-              && !propertyInfo.PropertyType.Equals( typeof( string ) ) )
+            if (propertyInfo.PropertyType.IsClass
+              && (propertyInfo.PropertyType != typeof(Transform))
+              && !propertyInfo.PropertyType.Equals(typeof(string)))
             {
               // We have a Collection/List of T.
-              if( propertyInfo.PropertyType.IsGenericType )
+              if (propertyInfo.PropertyType.IsGenericType)
               {
                 // Clone sub-objects if the T are non-primitive types objects. 
                 var arg = propertyInfo.PropertyType.GetGenericArguments().FirstOrDefault();
-                if( ( arg != null ) && !arg.IsPrimitive && !arg.Equals( typeof( String ) ) && !arg.IsEnum )
+                if ((arg != null) && !arg.IsPrimitive && !arg.Equals(typeof(String)) && !arg.IsEnum)
                 {
-                  var nestedObject = this.Clone( propertyInfoValue );
-                  propertyInfo.SetValue( result, nestedObject, null );
+                  var nestedObject = this.Clone(propertyInfoValue);
+                  propertyInfo.SetValue(result, nestedObject, null);
                 }
                 else
                 {
                   // copy object if the T are primitive types objects.
-                  propertyInfo.SetValue( result, propertyInfoValue, null );
+                  propertyInfo.SetValue(result, propertyInfoValue, null);
                 }
               }
               else
               {
-                var nestedObject = this.Clone( propertyInfoValue );
-                if( nestedObject != null )
+                var nestedObject = this.Clone(propertyInfoValue);
+                if (nestedObject != null)
                 {
                   // For T object included in List/Collections, Add it to the List/Collection of T.
-                  if( index != null )
+                  if (index != null)
                   {
-                    result.GetType().GetMethod( "Add" ).Invoke( result, new[] { nestedObject } );
+                    result.GetType().GetMethod("Add").Invoke(result, new[] { nestedObject });
                   }
                   else
                   {
-                    propertyInfo.SetValue( result, nestedObject, null );
+                    propertyInfo.SetValue(result, nestedObject, null);
                   }
                 }
               }
@@ -294,14 +295,14 @@ namespace Xceed.Wpf.Toolkit
             else
             {
               // For T object included in List/Collections, Add it to the List/Collection of T.
-              if( index != null )
+              if (index != null)
               {
-                result.GetType().GetMethod( "Add" ).Invoke( result, new[] { propertyInfoValue } );
+                result.GetType().GetMethod("Add").Invoke(result, new[] { propertyInfoValue });
               }
               else
               {
                 // copy regular object
-                propertyInfo.SetValue( result, propertyInfoValue, null );
+                propertyInfo.SetValue(result, propertyInfoValue, null);
               }
             }
           }
@@ -311,38 +312,38 @@ namespace Xceed.Wpf.Toolkit
       return result;
     }
 
-    private object GenerateEditableKeyValuePair( object source )
+    private object GenerateEditableKeyValuePair(object source)
     {
       var sourceType = source.GetType();
-      if( ( sourceType.GetGenericArguments() == null ) || ( sourceType.GetGenericArguments().GetLength( 0 ) != 2 ) )
+      if ((sourceType.GetGenericArguments() == null) || (sourceType.GetGenericArguments().GetLength(0) != 2))
         return null;
 
-      var propInfoKey = sourceType.GetProperty( "Key" );
-      var propInfoValue = sourceType.GetProperty( "Value" );
-      if( ( propInfoKey != null ) && ( propInfoValue != null ) )
+      var propInfoKey = sourceType.GetProperty("Key");
+      var propInfoValue = sourceType.GetProperty("Value");
+      if ((propInfoKey != null) && (propInfoValue != null))
       {
-        return ListUtilities.CreateEditableKeyValuePair( propInfoKey.GetValue( source, null )
-                                                          , sourceType.GetGenericArguments()[ 0 ]
-                                                          , propInfoValue.GetValue( source, null )
-                                                          , sourceType.GetGenericArguments()[ 1 ] );
+        return ListUtilities.CreateEditableKeyValuePair(propInfoKey.GetValue(source, null)
+                                                          , sourceType.GetGenericArguments()[0]
+                                                          , propInfoValue.GetValue(source, null)
+                                                          , sourceType.GetGenericArguments()[1]);
       }
       return null;
     }
 
     private bool AreDictionaryKeysValid()
     {
-      var keys = _collectionControl.Items.Select( x =>
-      {
-        var keyType = x.GetType().GetProperty( "Key" );
-        if( keyType != null )
-        {
-          return keyType.GetValue( x, null );
-        }
-        return null;
-      } );
+      var keys = _collectionControl.Items.Select(x =>
+     {
+       var keyType = x.GetType().GetProperty("Key");
+       if (keyType != null)
+       {
+         return keyType.GetValue(x, null);
+       }
+       return null;
+     });
 
-      return ( keys.Distinct().Count() == _collectionControl.Items.Count )
-             && keys.All( x => x != null );
+      return (keys.Distinct().Count() == _collectionControl.Items.Count)
+             && keys.All(x => x != null);
     }
 
     #endregion
