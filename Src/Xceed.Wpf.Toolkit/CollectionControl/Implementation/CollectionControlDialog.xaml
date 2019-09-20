@@ -39,7 +39,7 @@
 
     <StackPanel Orientation="Horizontal"
                   Grid.Row="1"
-                  HorizontalAlignment="Right"
+                  HorizontalAlignment="Center"
                   Margin="5">
       <Button Width="75"
                  Margin="2"
@@ -48,7 +48,7 @@
       <Button Width="75"
                  Margin="2"
                  Click="CancelButton_Click"
-                 IsCancel="True">Cancel</Button>
+                 IsCancel="True">Abbrechen</Button>
     </StackPanel>
 
   </Grid>

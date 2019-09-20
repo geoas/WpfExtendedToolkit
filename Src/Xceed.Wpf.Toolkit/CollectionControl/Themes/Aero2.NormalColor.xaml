@@ -294,8 +294,7 @@
               </Border>
 
               <chrome:ButtonChrome x:Name="ToggleButtonChrome"
-                                   Grid.Column="1"
-                                   CornerRadius="0,2.75,2.75,0"
+                                   Grid.Column="1"                                   
                                    RenderEnabled="{Binding IsEnabled, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=local:CollectionControlButton}}"
                                    RenderMouseOver="{TemplateBinding IsMouseOver}">
                 <Grid x:Name="arrowGlyph"
